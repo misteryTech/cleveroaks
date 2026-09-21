@@ -38,46 +38,58 @@
 
                     <div class="col-6">
                       <label for="yourFirstName" class="form-label">First Name</label>
-                      <input type="text" name="first_name" class="form-control" id="yourFirstName" required>
-                      <div class="invalid-feedback">Please enter your first name!</div>
+                      <input type="text" name="first_name" class="form-control{% if form.first_name.errors %} is-invalid{% endif %}" id="yourFirstName" value="{{ form.first_name.value|default:'' }}" required>
+                      <div class="invalid-feedback">{% if form.first_name.errors %}{{ form.first_name.errors.0 }}{% else %}Please enter your first name!{% endif %}</div>
                     </div>
 
                     <div class="col-6">
                       <label for="yourLastName" class="form-label">Last Name</label>
-                      <input type="text" name="last_name" class="form-control" id="yourLastName" required>
-                      <div class="invalid-feedback">Please enter your last name!</div>
+                      <input type="text" name="last_name" class="form-control{% if form.last_name.errors %} is-invalid{% endif %}" id="yourLastName" value="{{ form.last_name.value|default:'' }}" required>
+                      <div class="invalid-feedback">{% if form.last_name.errors %}{{ form.last_name.errors.0 }}{% else %}Please enter your last name!{% endif %}</div>
                     </div>
 
                     <div class="col-12">
                       <label for="yourEmail" class="form-label">Your Email</label>
-                      <input type="email" name="email" class="form-control" id="yourEmail" required>
-                      <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                      <input type="email" name="email" class="form-control{% if form.email.errors %} is-invalid{% endif %}" id="yourEmail" value="{{ form.email.value|default:'' }}" required>
+                      <div class="invalid-feedback">{% if form.email.errors %}{{ form.email.errors.0 }}{% else %}Please enter a valid email address!{% endif %}</div>
                     </div>
 
                     <div class="col-12">
-                      <label for="yourContactNumber" class="form-label">Contact Number</label>
-                      <input type="tel" name="contact_number" class="form-control" id="yourContactNumber" pattern="[0-9+\-\s]{7,20}" required>
-                      <div class="invalid-feedback">Please enter a valid contact number!</div>
+                      <label for="yourContactNumber" class="form-label">Mobile Number</label>
+                      <input type="tel" name="contact_number" class="form-control{% if form.contact_number.errors %} is-invalid{% endif %}" id="yourContactNumber" pattern="[0-9+\-\s]{7,20}" value="{{ form.contact_number.value|default:'' }}" required>
+                      <div class="invalid-feedback">{% if form.contact_number.errors %}{{ form.contact_number.errors.0 }}{% else %}Please enter a valid mobile number!{% endif %}</div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="yourSchool" class="form-label">School Attained</label>
+                      <input type="text" name="school" class="form-control{% if form.school.errors %} is-invalid{% endif %}" id="yourSchool" value="{{ form.school.value|default:'' }}" required>
+                      <div class="invalid-feedback">{% if form.school.errors %}{{ form.school.errors.0 }}{% else %}Please enter your school!{% endif %}</div>
                     </div>
 
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Username</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="username" class="form-control" id="yourUsername" required>
-                        <div class="invalid-feedback">Please choose a username.</div>
+                        <input type="text" name="username" class="form-control{% if form.username.errors %} is-invalid{% endif %}" id="yourUsername" value="{{ form.username.value|default:'' }}" required>
+                        <div class="invalid-feedback">{% if form.username.errors %}{{ form.username.errors.0 }}{% else %}Please choose a username.{% endif %}</div>
                       </div>
                     </div>
 
                     <div class="col-12">
                       <label for="yourPassword" class="form-label">Password</label>
-                      <input type="password" name="password" class="form-control" id="yourPassword" required>
-                      <div class="invalid-feedback">Please enter your password!</div>
+                      <input type="password" name="password" class="form-control{% if form.password.errors %} is-invalid{% endif %}" id="yourPassword" required>
+                      <div class="invalid-feedback">{% if form.password.errors %}{% for e in form.password.errors %}{{ e }} {% endfor %}{% else %}Please enter your password!{% endif %}</div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="confirmPassword" class="form-label">Confirm Password</label>
+                      <input type="password" name="confirm_password" class="form-control{% if form.confirm_password.errors %} is-invalid{% endif %}" id="confirmPassword" required>
+                      <div class="invalid-feedback">{% if form.confirm_password.errors %}{{ form.confirm_password.errors.0 }}{% else %}Please confirm your password!{% endif %}</div>
                     </div>
 
                     <div class="col-12">
                       <div class="form-check">
-                        <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
+                        <input class="form-check-input{% if form.terms.errors %} is-invalid{% endif %}" name="terms" type="checkbox" value="on" id="acceptTerms" {% if form.terms.value %}checked{% endif %} required>
                         <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
                         <div class="invalid-feedback">You must agree before submitting.</div>
                       </div>
