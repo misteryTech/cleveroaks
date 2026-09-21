@@ -8,7 +8,10 @@ REM   set DB_PASSWORD=your-password
 cd /d "%~dp0"
 
 set PY=venv\Scripts\python.exe
-if not exist "%PY%" set PY=python
+if not exist "%PY%" (
+    echo === Creating virtual environment in venv ===
+    python -m venv venv || goto :error
+)
 
 echo === Installing requirements ===
 "%PY%" -m pip install -q -r requirements.txt || goto :error
