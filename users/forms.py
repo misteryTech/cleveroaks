@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.validators import RegexValidator
@@ -47,4 +48,33 @@ class RegistrationForm(forms.Form):
                 validate_password(password, user)
             except forms.ValidationError as e:
                 self.add_error('password', e)
+        return cleaned
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(
+        label='Username or Email',
+        widget=forms.TextInput(attrs={'class': 'form-control', 'autofocus': True}),
+    )
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    remember_me = forms.BooleanField(required=False)
+
+    def __init__(self, request=None, *args, **kwargs):
+        self.request = request
+        self.user = None
+        super().__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned = super().clean()
+        identifier = cleaned.get('username')
+        password = cleaned.get('password')
+        if identifier and password:
+            username = identifier.strip()
+            if '@' in username:
+                match = User.objects.filter(email__iexact=username).first()
+                if match:
+                    username = match.get_username()
+            self.user = authenticate(self.request, username=username, password=password)
+            if self.user is None:
+                raise forms.ValidationError('Invalid username/email or password.')
         return cleaned

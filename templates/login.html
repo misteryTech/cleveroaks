@@ -12,9 +12,9 @@
         <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
           <div class="d-flex justify-content-center py-4">
-            <a href="{% url 'accounts:login' %}" class="logo d-flex align-items-center w-auto">
+            <a href="{% url 'login' %}" class="logo d-flex align-items-center w-auto">
               <img src="{% static 'assets/img/logo.png' %}" alt="">
-              <span class="d-none d-lg-block">ASH System</span>
+              <span class="d-none d-lg-block">Clever Oaks</span>
             </a>
           </div><!-- End Logo -->
 
@@ -66,6 +66,10 @@
 
                 <div class="col-12">
                   <button class="btn btn-primary w-100" type="submit">Login</button>
+                </div>
+
+                <div class="col-12">
+                  <p class="small mb-0">Don't have an account? <a href="{% url 'register' %}">Create an account</a></p>
                 </div>
 
               </form>

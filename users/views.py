@@ -1,10 +1,18 @@
 from django.contrib import messages
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.shortcuts import redirect, render
+from django.utils.http import url_has_allowed_host_and_scheme
 
-from .forms import RegistrationForm
+from .forms import LoginForm, RegistrationForm
 from .models import Profile
+
+
+@login_required
+def home(request):
+    return render(request, 'index.html')
 
 
 def register(request):
@@ -33,4 +41,25 @@ def register(request):
 
 
 def login_user(request):
-    return render(request, 'login.html')
+    if request.user.is_authenticated:
+        return redirect('home')
+
+    if request.method == 'POST':
+        form = LoginForm(request, request.POST)
+        if form.is_valid():
+            login(request, form.user)
+            if not form.cleaned_data['remember_me']:
+                request.session.set_expiry(0)  # expire when the browser closes
+            next_url = request.GET.get('next', '')
+            if url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
+                return redirect(next_url)
+            return redirect('home')
+    else:
+        form = LoginForm(request)
+    return render(request, 'login.html', {'form': form})
+
+
+def logout_user(request):
+    if request.method == 'POST':
+        logout(request)
+    return redirect('login')
